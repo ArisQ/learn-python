@@ -220,3 +220,45 @@ st = {(1, 2), 3, "A"}
 # st = {(1, 2), [3, 4, 5]}  # TypeError: unhashable type: 'list'
 ``` 
 
+### 函数
+
+* 内置函数[官方文档](https://docs.python.org/3/library/functions.html)
+
+* 定义函数
+
+    ```python
+    def f(x):
+        return -x
+    ```
+    
+* ``return``等价于``return None``
+
+* 空函数 ``pass``
+
+* ``isinstance(x, (int, float))``
+
+* ``raise TypeError('bad operand type)``
+
+* 返回多值 ``return x,y`` 实际返回tuple
+
+* 位置参数，默认参数，可变参数，关键字参数
+
+    * 必选参数在前，默认参数在后
+    
+    * 变化大的默认参数在前，变化小的默认参数在后
+    
+    * 默认参数可传入参数名，不按顺序提供默认参数
+    
+    * 默认参数必须指向不变对象
+        
+        Pycharm会提示*Default argument value is mutable*
+        
+    * 可变参数 ``def calc(*numbers)`` 组装成tuple
+    
+    * 关键字参数 ``def calc(*keyword)`` 组装成dict
+    
+    * 命名关键字参数 ``def person(name, age, *, city, job)`` ``def person(name, age, *args, city, job)``
+    
+    * 参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+    
+* 递归函数
