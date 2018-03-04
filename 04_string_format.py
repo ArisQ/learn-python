@@ -6,3 +6,4 @@ print("%4d~%04d" % (3, 1))
 print("%.2f" % 3.1415926)
 
 print("{0}, {1}!".format("Hello", "World"))
+print("{0:.6f}".format(3.141592653589793238))

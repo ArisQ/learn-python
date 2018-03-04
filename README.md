@@ -118,3 +118,105 @@
         * 占位符 ``{0},{1},...``
         
         * ``'{0}, {1}!'.format('Hello','World')``
+        
+        * ``'{1:.1f}''`` 保留一位小数
+
+### list
+
+```python
+classmates = ['Michael', 'Bob', 'Tracy']
+len(classmates)
+classmates[0]
+classmates[-1]
+classmates.insert(1,'Jack')
+classmates.pop()
+classmates.pop(1)
+l = ['A',123,True]
+```
+
+### tuple
+
+```python
+classmates = ('Michael', 'Bob', 'Tracy')
+len(classmates)
+classmates[0]
+classmates[-1]
+t = ()
+t = (1,) #t=(1)是数1 不是tuple
+t = (1, 2, [3, 4])
+t[2][0]=5    
+```
+
+### if else
+
+```python
+if <条件判断1>:
+    <执行1>
+elif <条件判断2>:
+    <执行2>
+elif <条件判断3>:
+    <执行3>
+else:
+    <执行4>
+```
+
+### input
+
+* ``input()``返回数据类型为``str``
+    
+* ``int()``转换
+
+### 循环
+
+* ``for in``
+    
+    ```python
+    for x in [1,2,3]:
+        print(x)
+    ```
+
+* ``rang(n)`` 生成整数序列
+
+* ``list(...)`` 转换为list
+
+* ``while``
+
+* ``break``
+
+* ``continue``
+
+### dict
+
+键-值/key-value对
+
+```python
+d= {'Michael': 95, 'Bob': 75, 'Tracy': 85}``
+d['Michael']
+d['Adam']=67
+d['Bob']=90
+'Thomas' in d
+d.get('Thomas') # 不存在返回None，交互环境None不显示结果
+d.get('Thomas',-1)
+d.pop('Bob')
+``` 
+
+### set
+
+创建set需提供list作为输入（实际测试可以为range）
+
+* ``add(key)`` ``remove(key)``
+
+* 交集``&`` 并集``|`` 差集``-`` 对称差集``^`` 子集``<=`` 真子集``^`` 超集``>=`` 真包含``>`` 
+
+```python
+s=set([1,2,3])
+s.add(4)
+s.remove(4)
+s & {3, 4, 5}
+s | {3, 4, 5}
+
+st = {(1, 2), (3, 4, 5)}
+st = {(1, 2), 3, "A"}
+# st = {(1, 2), [3, 4, 5]}  # TypeError: unhashable type: 'list'
+``` 
+
