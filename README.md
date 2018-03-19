@@ -19,7 +19,7 @@
 ### 数据类型
 
 * 整数，没有大小限制
-    
+  
     1, -1, 0xff00
 
 * 浮点数
@@ -27,7 +27,7 @@
     3.14, -2.71828, 1.23e-3, inf
 
 * 字符串
-    
+  
     * 'abc', "xyz"
     
     * 转义字符 \n \t \\ \'
@@ -163,13 +163,13 @@ else:
 ### input
 
 * ``input()``返回数据类型为``str``
-    
+  
 * ``int()``转换
 
 ### 循环
 
 * ``for in``
-    
+  
     ```python
     for x in [1,2,3]:
         print(x)
@@ -198,7 +198,7 @@ d['Bob']=90
 d.get('Thomas') # 不存在返回None，交互环境None不显示结果
 d.get('Thomas',-1)
 d.pop('Bob')
-``` 
+```
 
 ### set
 
@@ -218,7 +218,7 @@ s | {3, 4, 5}
 st = {(1, 2), (3, 4, 5)}
 st = {(1, 2), 3, "A"}
 # st = {(1, 2), [3, 4, 5]}  # TypeError: unhashable type: 'list'
-``` 
+```
 
 ### 函数
 
@@ -250,7 +250,7 @@ st = {(1, 2), 3, "A"}
     * 默认参数可传入参数名，不按顺序提供默认参数
     
     * 默认参数必须指向不变对象
-        
+      
         Pycharm会提示*Default argument value is mutable*
         
     * 可变参数 ``def calc(*numbers)`` 组装成tuple
@@ -286,5 +286,43 @@ st = {(1, 2), 3, "A"}
     ```
 
     * ``collections``模块的``Iterable``类型
-
     * ``enumerate``函数
+
+* 列表生成式（List Comprehensions)
+
+    ```python
+    [x*x for x in range(1,11)]
+    [x*x for x in range(1,11) if x%2==0]
+    [m+n for m in 'ABC' for n in 'XYZ']
+    ```
+
+    * ``os os.listdir()``
+
+* 生成器
+
+    ```python
+    g=(x*x for x in range(10))
+    next(g)
+    # StopIteration
+    yield
+
+    try:
+    except StopIteration as e:
+    ```
+
+    * generator ``（）``
+    * 含``yield``的函数
+
+* 迭代器
+
+    | 数据类型                                                | ``for``/``Iterable`` | ``next()``/``Iterator`` |
+    | ------------------------------------------------------- | -------------------- | ----------------------- |
+    | 集合数据类型``list`` ``tuple`` ``dict`` ``set`` ``str`` | √                    | ×                       |
+    | ``generator``                                           | √                    | √                       |
+
+    * ``iter()``将Iterable变成Iterator （获取迭代器）
+
+### 函数式编程（Functional Programming）
+
+* 高阶函数（Higher-order function)
+* ​
