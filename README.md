@@ -325,4 +325,99 @@ st = {(1, 2), 3, "A"}
 ### 函数式编程（Functional Programming）
 
 * 高阶函数（Higher-order function)
-* ​
+  * 接收另一个函数作为参数的函数
+
+  * ```python
+    def add(x,y,f)
+    	return f(x)+f(y)
+    ```
+
+* map reduce
+
+  * map
+    * 接收一个函数，一个Iterable，返回Iterator，将函数作用于每个元素
+    * Iterator是惰性的
+  * reduce
+    * 接收一个函数和一个序列，函数必须接收两个参数，reduce将结果与下一个元素作为参数调用函数
+    * 在``functools``中
+
+* filter
+
+  * 接收一个函数和一个序列，函数根据元素返回True/False，filter根据返回结果决定保留或删除
+  * 返回Iterator惰性求值
+  * **负号``-``的优先级高除法``//``，因此``-3//2-1``为``((-3)//2)-1=-3``而不是``(-(3//2))-1=-2``**
+
+* sorted
+
+  * ```python
+    sorted([36,5,-12,9,-21])
+    sorted([36,5,-12,9,-21],key=abs)
+    sorted(['bob','about','Zoo','Credit'],key=str.lower)
+    sorted(['bob','about','Zoo','Credit'],key=str.lower,reverse=True)
+    ```
+
+* 返回函数/函数作为返回值
+
+  * 闭包
+  * 返回闭包时牢记一点：返回函数不要引用任何循环变量，或者后续会发生变化的变量。
+  * 引用循环变量要创建一个函数，将参数绑定到循环变量上
+  * ``nonlocal``
+
+* 匿名函数
+
+  * ```python
+    lambda x : x*x
+    ```
+
+* 装饰器
+
+  * 函数对象``__name__``属性
+
+    * ``abs.__name__``
+
+  * ```python
+    def log(func):
+        def wrapper(*args,**kw):
+            print('calling %s()'%func.__name__)
+            return func(*args,**kw)
+        return wrapper
+
+    @log
+    def now():
+        print('2018-3-27')
+    # 等价于now=log(now)
+
+    def log(text):
+    	def decorator(func):
+            def wrapper(*args,**kw):
+                print('calling %s(), message %s' % (func.__name__,text)
+                return func(*args,**kw)
+            return wrapper
+        return decorator
+                      
+    @log('nothing')
+    def now():                  
+        print('2018-3-27')
+
+    def log(text):
+    	def decorator(func):
+            @functools.wraps(func):
+            def wrapper(*args,**kw):
+                print('calling %s(), message %s' % (func.__name__,text)
+                return func(*args,**kw)
+            return wrapper
+        return decorator
+    ```
+
+  * ``functools.wraps``
+
+  * **是否可以同时支持``@log``和``@log('execute')``**
+
+    * 不可以？默认参数（text）不能在必选参数（func）之前 （TODO）
+
+* 偏函数（partial function）
+
+  * ```python
+    int2=functools.partial(int,base=2)
+    ```
+
