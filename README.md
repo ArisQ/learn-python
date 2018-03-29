@@ -421,3 +421,147 @@ st = {(1, 2), 3, "A"}
     int2=functools.partial(int,base=2)
     ```
 
+
+### 模块
+
+* 一个文件就是一个模块
+
+* python包括内置模块和第三方模块
+
+* 不同模块函数变量名不会冲突
+
+* 包（package）
+
+  * ``__init__.py`` 模块名为包名
+
+* 模块的第一个字符串视为模块文档注释
+
+* 特殊变量
+
+  * ``__author__``
+  * ``__name__``
+  * ``__main__``
+  * ``__doc__``
+  * ``__len__``
+
+* ``sys.argv``
+
+* 作用域
+
+  * 公开（public），正常函数名
+  * 特殊变量，以``__``开头和结尾
+  * 私有/非公开（private），以``__``开头，非强制
+
+* 安装第三方模块 ``pip install Pillow``
+
+* Anaconda
+
+### OOP
+
+  * 类 对象
+
+    * ```python
+      class student(object)
+      	def __init__(self,name,score):
+              self.name=name
+              self.score=score
+      ```
+
+  * 封装 访问限制
+
+    * 私有变量以``__``开头
+    * 实际可以通过``_classname__mem``访问，实际依赖解释器，建议不要这么访问
+    * ``foo.__mem``是错误的，并没有改变私有变量，只是创建类新变量
+
+  * 继承多态
+
+    * ``isinstance``判断，子类对象既是子类类型又是父类类型
+    * 开闭原则
+      * 对扩展开放
+      * 对修改封闭
+    * 鸭子类型
+      * 看起来像鸭子，走起来像鸭子就是鸭子
+
+  * 获取对象信息
+
+    * ``type()``
+
+      * ```python
+        int
+        str
+        types.FunctionType
+        types.BuiltinFunctionType
+        types.LambdaType
+        types.GeneratorType
+        ```
+
+    * ``isinstance``
+
+    * 优先使用``isinstance``
+
+    * ``dir()`` 获取对象的所有属性和方法
+
+    * ``getattr() setattr() hasattr()``
+
+      * ``AttributeError``
+
+  * 实例属性  类属性
+
+    * 实例属性
+
+      * 通过实例变量绑定
+      * 通过``self``变量绑定
+
+    * 类属性
+
+      * 直接在class中定义，归类所有
+
+        * ```python
+          class Foo(object)
+          	foo='foo content'
+          ```
+
+    * 实例属性与类属性同名会屏蔽掉类属性，删除同名实例属性后可以访问类属性
+
+### 面向对象高级编程
+
+* ``__slots__``
+
+  * 给实例绑定属性/方法
+
+    * ```python
+      s=Student()
+      s.name='Michael'
+
+      def set_age(self,age):
+      	self.age=age
+          
+      s.set_age=types.MethodType(set_age,s)
+      ```
+
+    * 给实例绑定方法后，对另一个实例不起作用
+
+  * 给类绑定方法``Student.set_score=set_score``，所有实例均可调用
+
+  * 使用``__slot__``限制能添加的属性，仅对当前类的实例有效，对子类无效
+
+    * ```python
+      class Student(object):
+          __slots__=('name','age')
+      ```
+
+* ``@property``装饰器
+
+  * getter方法变属性只需要加``@property``
+
+  * ```python
+    class Student(object):
+        @property
+        def score(self):
+        	return self._score
+        
+        @score.setter
+        def score(self,value):
+            pass
+    ```
+
