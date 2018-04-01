@@ -665,3 +665,185 @@ st = {(1, 2), 3, "A"}
     * ``','.join(sl)``
 
     * 类包含``metaclass``时，``metaclass``可以获取类的类对象，类名字，基类(bases)，属性(attrs)，可以修改相应的值，比如属性，而父类是不能获取到子类的属性等。类似于将类进行宏展开？
+
+### 错误、调试与测试
+
+* 错误类型
+
+  * Bug，修复
+  * 用户输入错误，输入检查
+  * 异常
+
+* 程序跟踪/调试
+
+* 测试
+
+* 错误处理
+
+  * 错误码
+  * ``try...except...finally...``
+  * 当认为代码可能出错时，用try执行
+  * 出错后跳到except
+  * finally最后执行
+  * except后可加else
+  * 错误是class，继承自``BaseException``
+  * [内建错误继承关系](https://docs.python.org/3/library/exceptions.html#exception-hierarchy)
+  * 可以跨多层调用
+  * 调用栈、异常栈
+  * 抛出异常
+    * ``raise``
+
+* 调试
+
+  * ``print``
+
+  * ``assert``
+
+  * ``logging``
+
+    * ```python
+      import logging
+      logging.basicConfig(level=logging.INFO)
+      logging.info('content') #debug info warning error
+      ```
+
+  * pdb
+
+    * ``python -m pdb foo.py`` ``l`` ``n`` ``p var`` ``q`` ``c``
+    * ``pdb.set_trace()`` ``import pdb``
+
+  * IDE
+
+  * logging才是终极武器hhhh
+
+* 单元测试
+
+  * TDD(Test-Driven Development) 测试驱动开发
+
+  * 对模块、函数或者类进行正确性检验
+
+  * ``unittest``模块
+
+    * 继承``unittest.TestCase``
+
+    * 以test开头的为测试方法，否则测试时不会执行
+
+    * 每一类测试编写一个``test_xxx()``
+
+    * 条件判断
+
+      * ``assertEqual ``
+
+      * ``assertTrue``
+
+      * ```python
+        with self.assertRaises(KeyError):
+        	value=d['empty']
+        ```
+
+    * ``setUp`` ``tearDown``
+
+  * 运行单元测试
+
+    * ```python
+      if __name__=='__main__':
+          unittest.main()
+      ```
+
+    * ``python -m unittest foo_test`` 推荐方法
+
+  * 作用
+
+    * 可以有效测试模块的行为
+    * 应覆盖常用输入组合，边界条件和异常
+    * 测试代码要简单，否则可能会有Bug
+    * 测试通过不说明没有Bug，测试不通必然有Bug
+
+* 文档测试
+
+  * ``doctest``模块
+
+  * ```python
+    if __name__=='__main__':
+        import doctest
+        doctest.testmod()
+    ```
+
+  * pycharm推荐使用三个双引号进行文档注释/文档测试
+
+
+### IO编程
+
+* input/output
+
+* Stream 流
+
+* IO模型
+
+  * 同步IO
+  * 异步IO
+    * 回调模式
+    * 轮询模式
+
+* 文件读写
+
+  * 读文件
+
+    * ```python
+      f=fopen('/Users/michael/test.txt','r') # 文件存在抛出IOError异常
+      f.read() #读取所有内容
+      f.close()
+      try:
+          f=open('/path/file','r')
+          print(f.read())
+      finally:
+          if f:
+              f.close()
+      #等价于
+      with open('/path/file','r') as f: #不必调用f.close()
+          print(f.read())
+      read(size)
+      readlines()
+      ```
+
+    * ``open``返回file-like Object，可以是文件、内存字节流、网络流、自定义流。不需要继承，有``read()``方法即可。``StringIO``（常用作临时缓冲）
+
+    * 二进制文本``rb``
+
+    * 字符编码``encoding='gbk'``
+
+    * open接收``errors='ignore'``忽略非法编码错误
+
+  * 写文件
+
+    * ``'w'`` ``write`` ``'a'``
+
+* StringIO BytesIO
+
+  * ```python
+    from io import StringIO,BytesIO
+    f=StringIO()
+    f2=StringIO('Hello World')
+    f.getvalue()
+    fb=BytesIO()
+    fb.write('中文'.encode('utf-8'))
+    ```
+
+* 文件和目录操作
+
+  * ``os.name``
+    * ``posix`` Linux/Unix/MacOSX
+    * ``nt`` Windows
+  * ``os.uname()`` Windows不提供
+  * ``os.environ`` 环境变量
+    * ``os.environ.get('key')``
+  * ``os.path.abspath('.')``绝对路径
+  * ``os.path.join('/path/base','testdir')`` 合成路径，能够处理不同系统的路径分隔符
+  * ``os.path.split('/path/to/whatever')`` 拆分路径
+  * ``os.path.splittxt('/path/to/file.ext')`` 分离扩展名
+  * ``os.mkdir('/path/to/directory')``创建文件夹
+  * ``os.rmdir('/path/to/directory')``删除文件夹
+  * ``os.rename('old','new')``重命名
+  * ``os.remove('file')``删除文件
+  * 复制文件不在``os``模块中，在``shutil``中，``copytfile()``
+  * ``os.listdir('.')``列出文件
