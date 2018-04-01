@@ -442,7 +442,7 @@ st = {(1, 2), 3, "A"}
   * ``__name__``
   * ``__main__``
   * ``__doc__``
-  * ``__len__``
+  * ``__len_()``方法
 
 * ``sys.argv``
 
@@ -565,3 +565,103 @@ st = {(1, 2), 3, "A"}
             pass
     ```
 
+* 多重继承
+
+  * ```python
+    class Dog(Mammal,Runnable):
+        pass
+    ```
+
+  * MixIn设计
+
+    * 主线单一继承
+    * MixIn用于给一个类增加功能
+    * ``TCPServer`` ``UDPServer`` ``ForkingMixIn`` ``ThreadingMixIn``
+
+* 定制类/特殊用途函数
+
+  * ``__str__()``  自定义返回字符串
+  * ``__repr__()`` 开发者字符串
+  * ``__iter__()`` 将类用于``for ... in``循环
+  * ``__next__()`` 拿取循环下一个值，直到``StopIteration``
+  * ``__getitem__()`` 实现取下标或者切片（需要判断），或者取key的值
+  * ``__setitem__()``将对象视为``list``或``dict``进行赋值
+  * ``__delitem__()``删除元素
+  * ``__getattr__()``动态属性，只有找不到属性时才会调用
+  * ``__call__()``通过``instance()``调用而不是``instance.method()``调用，相当于C++函数调用运算符重载
+    * ``Callable``对象
+
+* 枚举类
+
+  * ```python
+    from enum import Enum,unique
+    Week = Enum('Week',('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'))
+    Week.Sunday
+    Week(0)
+    for name,mem in Week.__members__.items():
+        print(name,mem,mem.value)
+
+    @unique
+    class Weekday(Enum):
+        Sun=0
+        Mon=1
+        Tue=2
+        Wed=3
+        Thu=4
+        Fri=5
+        Sat=6
+    ```
+
+  * value是自动赋值的，默认从1开始，如要控制可以从``Enum``派生
+
+  * ``@unique``装饰器检查保证没有重复值
+
+* 元类
+
+  * ``type()``
+
+    * 查看对象或类型的类型
+
+    * 创建class对象
+
+      * ```python
+        def fn(self,name='world'):
+        	print('Hello, %s.' % name)
+        Hello=type('Hello',(object,),dict(hello=fn))
+        ```
+
+      * 传入三个参数
+
+        * class名称
+        * 继承的父类集合
+        * 绑定方法名称
+
+  * ``metaclass()``元类
+
+    * ```python
+      class ListMetaClass(type):
+          def __new__(cls,name,bases,attrs):
+              attrs['add']=lambda self,value: self.append(value)
+              return type.__new__(cls,name,bases,attrs)
+      class MyList(list,metaclass=List):
+          pass
+      ```
+
+    * 一般以MetaClass结尾
+
+    * 元类是类的模板，必选从``type``类型派生
+
+    * ``__new__()``参数
+
+      * 当前准备创建的类的对象
+      * 类名字
+      * 类继承的父类的集合
+      * 类的方法集合
+
+    * ORM(Object Relational Mapping) 对象-关系映射
+
+      * ``Model``类
+
+    * ``','.join(sl)``
+
+    * 类包含``metaclass``时，``metaclass``可以获取类的类对象，类名字，基类(bases)，属性(attrs)，可以修改相应的值，比如属性，而父类是不能获取到子类的属性等。类似于将类进行宏展开？
