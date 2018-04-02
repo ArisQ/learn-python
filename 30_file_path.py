@@ -4,6 +4,7 @@
 import os
 import time
 import stat
+import platform
 from functools import reduce
 
 
@@ -23,21 +24,34 @@ def mode2str(mode):
 
 def dir_l(path):
     for f in sorted(os.listdir(path)):
-        fstat = os.stat(f)
-        print(mode2str(fstat.st_mode),
-              '1', fstat.st_uid,
-              fstat.st_gid,
-              fstat.st_size,
-              time.strftime('%b %d %H:%M', time.localtime(fstat.st_ctime)),
-              f)
-    pass
+        f_stat = os.stat(os.path.join(path, f))
+        owner_name = f_stat.st_uid
+        owner_group = f_stat.st_gid
+        if platform.system() == 'Linux':
+            import pwd, grp
+            owner_name = pwd.getpwuid(f_stat.st_uid).pw_name
+            owner_group = grp.getgrgid(f_stat.st_gid).gr_name
+        print('%s %d %s %s %5d %s %s' % (mode2str(f_stat.st_mode),
+                                         f_stat.st_nlink,
+                                         owner_name,
+                                         owner_group,
+                                         f_stat.st_size,
+                                         time.strftime('%b %d %H:%M', time.localtime(f_stat.st_ctime)),
+                                         f))
 
-dir_l('.')
 
-
-# 编写一个程序，能在当前目录以及当前目录的所有子目录下查找文件名包含指定字符串的文件，并打印出相对路径。
 def find_file(path, str):
-    pass
+    result = []
+    for f in os.listdir(path):
+        if os.path.isfile(f) and f.find(str) != -1:
+            result.append(os.path.join(path, f))
+        if os.path.isdir(f):
+            sub_result = find_file(os.path.join(path, f), str)
+            if sub_result:
+                result.append(sub_result)
+    return result
 
 
-find_file('.', 'txt')
+if __name__ == '__main__':
+    dir_l('.')
+    print(find_file('.', '9'))

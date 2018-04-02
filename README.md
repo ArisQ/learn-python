@@ -684,7 +684,7 @@ st = {(1, 2), 3, "A"}
   * ``try...except...finally...``
   * 当认为代码可能出错时，用try执行
   * 出错后跳到except
-  * finally最后执行
+  * finally最后执行 **不管是否发生异常，finally都会执行**
   * except后可加else
   * 错误是class，继承自``BaseException``
   * [内建错误继承关系](https://docs.python.org/3/library/exceptions.html#exception-hierarchy)
@@ -847,3 +847,137 @@ st = {(1, 2), 3, "A"}
   * ``os.remove('file')``删除文件
   * 复制文件不在``os``模块中，在``shutil``中，``copytfile()``
   * ``os.listdir('.')``列出文件
+
+* 序列化
+
+  * 序列化pickling/serialization/marshaling/flattening，反序列化unpickling
+
+  * ``pickle``
+
+    * ``pickle.dumps()``序列化为``bytes``
+    * ``pickle.dump()``序列化并写入file-like Object
+    * ``pickle.loads()``
+    * ``pickle.load()``
+
+  * JSON
+
+    * | JSON       | Python     |
+      | ---------- | ---------- |
+      | {}         | dict       |
+      | []         | list       |
+      | "string"   | str        |
+      | 1234.56    | int/float  |
+      | true/false | True/False |
+      | null       | None       |
+
+    * ``dumps()``
+
+      * 可以提供class到dict的函数``json.dumps(s,default=student2dict)``
+      * 直接用``__dict__``属性，定义了``__slots__``则没有``__dict__``属性
+
+    * ``dump()``
+
+    * ``loads()``
+
+    * ``load()``
+
+    * JSON编码为UTF-8
+### 进程与线程
+
+* 多任务
+
+  * 多进程模式
+  * 多线程模式
+  * 多进程+多线程模式
+
+* 多进程
+
+  * ``os.fork()`` 仅用于Unix/Linux
+
+    * 子进程返回0，通过``getppid()``返回父进程ID
+    * 父进程返回子进程ID
+
+  * ``multiprocessing``
+
+    * ``Process``对象
+
+      * ```python
+        p=Process(target=proc,args=('a1',))
+        p.start()
+        p.join()
+        ```
+
+      * ``start()``启动
+
+      * ``join()``等待
+
+    * ``Pool``进程池
+
+      * ```python
+        p=Pool()
+        p.apply_async(task,arg=(i,))
+        p.close()
+        p.join()
+        ```
+
+    * 进程间通信（``multiprocessing``包）
+
+      - ``Queue``
+      - ``Pipes``
+
+  * ``subprocess``子进程
+
+    * ``subprocess.call(['nslookup','www.python.org'])``
+
+    * ```python
+      p=subprocess.Popen(['nslookup'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+      output,err=p.communicate(b'set q=mx\npython.org\nexit\n')
+      print(output.decode('utf-8'))
+      print(p.returncode)
+      ```
+
+* 多线程
+
+  * ``_thread``低级模块
+
+  * ``threading``高级模块
+
+    * ```python
+      t=threading.Thread(target=loop,name='LoopThread')
+      t.start()
+      t.join()
+      ```
+
+    * ``current_thread()``返回当前线程实例，实例名字默认为``MainThread Thread-1 Thread-2 ...``
+
+    * ``threading.Lock()`` 锁
+
+      * ``lock.acquire()``
+      * ``lock.release()``
+
+    * GIL锁（Global Interpreter Lock）
+
+      * 线程执行前获取GIL，执行100条字节码自动释放，因此只能用到一核
+
+  * ThreadLocal
+
+    * ``threading.local()``
+    * 每个线程相互独立的全局变量
+
+  * 多进程VS多线程
+
+    * 多进程稳定性高，一个子进程崩溃不会影响其他线程（Apache）
+    * 多进程创建进程代价大，进程数有有限制
+    * 多线程比多进程略快
+    * 多线程任一线程挂掉有可能造成进程崩溃
+    * 多线程效率高（IIS）
+    * 任务类型
+      * 计算密集型，首选C语言
+      * IO密集型，首选脚本语言
+    * 异步IO
+      * 事件驱动模型（Nginx）
+
+  * 分布式进程
+
+    * 优选Process，Process可以分布到多台机器上，Thread只能分布到同一机器上
+    * ``multiprocess.managers``进程分布到多台机器
