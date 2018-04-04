@@ -1036,3 +1036,214 @@ st = {(1, 2), 3, "A"}
   * 编译正则表达式，生成Regular Expression对象
 
     * ``re.compile()``
+
+### 内建模块
+
+* ``datetime``模块
+
+  * ``datetime``类
+
+    * ```python
+      datetime.now()
+      dt=datetime(2012,12,21,0,0,0)
+      dt.timestamp()
+      datetime.fromtimestamp(1429417200.0)
+      datetime.utcfromtimestamp(1429417200.0)
+      datetime.strptime('2012-12-21 00:00:00','%Y-%m-%d %H:%M:%S')
+      dt.strftime('%a, %b %d %H:%M')
+      datetime.now()+timedelta(days=1,hours=10)
+      ```
+
+    * ``tzinfo``属性,默认为``None``
+
+  * ``timestamp``
+
+    * epoch time (1970.1.1 00:00:00 UTC+00:00)
+
+  * datetime字符串转换
+
+  * ``timedelta``类(datetime加减)
+
+  * 时区转换
+
+    * 本地时间，UTC时间
+
+    * ``timezone``类
+
+    * ```python
+      utc_dt=datetime.utcnow().replace(tzinfo=timezone.utc)
+      bj_dt=utc_dt.astimezone(timezone(timedelta(hours=8)))
+      tokyo_dt=utc_dt.astimezone(timezone(timedelta(hours=9)))
+      tokyo_dt2=bj_dt.astimezone(timezone(timedelta(hours=9)))
+      ```
+
+* collections
+
+  * ``namedtuple``
+
+    * ```python
+      Point=namedtuple('Point',['x','y'])
+      p=Point(1,2)
+      p.x
+      p.y
+      ```
+
+  * ``deque``双向链表
+
+    * ```python
+      q=deque(['a','b','c'])
+      q.pop()
+      q.popleft()
+      q.append('x')
+      q.appendleft('y')
+      ```
+
+  * ``defaultdict``
+
+    * ```python
+      dd=defaultdict(lambda: 'N/A')
+      dd['key1']='abc'
+      dd['key1']
+      dd['key2']
+      ```
+
+  * ``OrderedDict`` 按照插入的顺序排列，而不是Key本身
+
+    * ```python
+      od=OrderedDict()
+      od['z']=1
+      od['y']=2
+      od['x']=3
+      ```
+
+    * 可以实现FIFO队列
+
+  * ``Counter``
+
+    * ```python
+      c=Counter()
+      for ch in 'programming':
+          c[ch]=c[ch]+1
+      ```
+
+* base64
+
+  * base64三个字节为一组(24bit)，分成4个6bit数据，每个6bit去查包含64个字符的数组（2^6=64）。故base64长度都是4的倍数
+
+  * 不足三个字节填0
+
+  * ```python
+    base64.b64encode()
+    base64.b64decode()
+    base64.urlsafe_b64encode()
+    base64.urlsafe_b64decode()
+    ```
+
+* struct
+
+  * ```python
+    stuct.pack('>I',10240099)
+    struct.unpack('>IH',b'\xf0\xf0\xf0\xf0\x80\x80')
+    ```
+
+  * ``>``表示big-endian
+
+  * ``I``表示4字节无符号整数
+
+  * ``H``表示2字节无符号整数
+
+* hashlib
+
+  * md5
+
+    * ```python
+      md5=hashlib.md5()
+      md5.update('how to use md5 in python hashlib?'.encode('utf-8'))
+      md5.hexdigest()
+      ```
+
+    * ​
+
+  * SHA1
+
+  * SHA256
+
+  * SHA512
+
+* hmac
+
+  * ```python
+    h=hmac.new(key,message,digestmod='MD5')
+    h.hexdigest()
+    ```
+
+  * Keyed-Hashing for Message Authentication
+
+* itertools
+
+  * ``count()`` 创建一个无限计数迭代器
+
+  * ``cycle()`` 重复传入的序列
+
+  * ``repeat()`` 重复给定的元素
+
+  * ``takewhile()`` 截取有限的序列
+
+  * ``chain()`` 串联对象，形成更大的迭代器
+
+  * ``groupby()`` 挑出相同的元素
+
+  * ```python
+    itertools.count(1) # 1 2 3 4 5 ...
+    itertools.cycle('ABC') # 'A' 'B' 'C' 'A' 'B' 'C' ...
+    itertools.repeat('ABC') # 'ABC' 'ABC' 'ABC' ...
+    itertools.takewhile(lambda x:x<10, itertools.count(1)) # [1,2,3,...,10]
+    itertools.chain('ABC','XYZ') # 'A' 'B' 'C' 'X' 'Y' 'Z'
+    itertools.groupby('AaaBBbCcC',lambda c:c.upper())
+    ```
+
+* contextlib
+
+  * ``with ... as ...``
+
+  * 通过``__enter__``和``__exit__``实现上下文管理，实现了上下文管理的对象，都可以用于``with``
+
+  * ``@contextmanager``装饰器
+
+    * ```python
+      @contextmanager
+      def create_object(args):
+          print('Begin') # enter
+          o=Object(args) # create object
+          yield o # 输出
+          print('End') # exit
+      ```
+
+    * 也可以不创建对象，用``with``在代码前后执行特定代码
+
+      * ```python
+        @contextmanager
+        def tag(name):
+            print(name)
+            yield
+            print(name)
+        with tag('<h1>'):
+            print('hello')
+            print('world')
+        ```
+
+  * ``@closing``
+
+    * 没有实现上下文可以用``closing()``变为上下文对象
+
+      * ``with closing(urlopen('https://www.python.org')) as page:``
+
+      * ```python
+        @contextmanager
+        def closing(thing):
+            try:
+                yield thing
+            finally:
+                thing.close()
+        ```
+
