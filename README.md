@@ -1245,5 +1245,50 @@ st = {(1, 2), 3, "A"}
                 yield thing
             finally:
                 thing.close()
+
         ```
+
+* urllib
+
+  * ``request``模块
+
+  * Get
+
+    * ```python
+      with request.urlopen('https://api.github.com') as f:
+          print(f.status,f.reason)
+          print(f.read().decode('utf-8'))
+          print(f.getheaders())
+      req=request.Request('https://api.github.com')
+      req.add_header('User-Agent':'Mozilla/6.0...')
+      with request.urlopen(req) as f:
+          #print...
+      ```
+
+  * Post
+
+    * ```python
+      data=parse.urlencode([('username','email@email.com'),('password','passwd')])
+      with request.urlopen(req,data=data.encode('utf-8')) as f:
+          #...
+      ```
+
+  * Handler
+
+    * ``ProxyHandler``
+
+* XML
+
+  * 两种方式
+    * DOM
+      * DOM将整个XML读入内存，解析为树，因此占用内存大，解析慢，可以遍历树的节点
+    * SAX
+      * 流模式，边读边解析，占用内存小，解析快，需要自己处理事件
+      * ``start_element end_element char_data``事件
+      * 可能多次调用``char_data``事件，需要自己合并
+    * 优先考虑SAX
+
+* HTML Parser
+
+  * ```handle_starttag`` ``handle_endtag`` ``handle_startendtag`` ``handle_data`` ``handle_comment`` ``handle_entityref`` ``handle_charref``
 
