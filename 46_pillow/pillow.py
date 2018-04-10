@@ -25,7 +25,7 @@ def rand_fg():
 width = 260
 height = 80
 image = Image.new('RGB', (width, height), (255, 255, 255))
-font = ImageFont.truetype('Arial.ttf', 36)
+font = ImageFont.truetype('arial.ttf', 36)
 draw = ImageDraw.Draw(image)
 for x in range(width):
     for y in range(height):
