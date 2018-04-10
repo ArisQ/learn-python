@@ -1543,10 +1543,8 @@ st = {(1, 2), 3, "A"}
       s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
       s.sendto(b'world',('127.0.0.1',9999))
       s.recv(1024)
-      s.close
+      s.close()
       ```
-
-    * ​
 
   * 服务器
 
