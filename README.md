@@ -1557,3 +1557,73 @@ st = {(1, 2), 3, "A"}
           s.sendto(b'hello, %s!'%data,addr)
       s.close()
       ```
+
+### 电子邮件
+
+* 电子邮件流程
+
+  * MUA(Mail User Agent) 邮件用户代理
+  * MTA(Mail Transfer Agent)邮件传输代理
+  * MDA(Mail Delivery Agent)邮件投递代理
+
+* SMTP(simple Mail Tansfer Protocol)发送邮件
+  * ``email``模块构造邮件
+
+  * ``smtplib``模块发送邮件
+
+  * ```python
+    from email.mime.text import MIMEText
+    from email import encoders
+    from email.header import Header
+    from email.utils import parseaddr,formataddr
+    msg=MIMEText('hello,email','plain','utf-8')
+    msg['From']=_format_addr('name <self@email.com>')
+    msg['To']=_format_addr('name <target@email.com>')
+    msg['Subject']=Header('Title','utf-8').encode()
+    import smtplib
+    server=smtplib.SMTP(smtp_server,25)
+    server.set_debuglevel(1)
+    server.login(from_addr,password)
+    server.sendmail(from_addr,[to_addr],msg.as_string())
+    server.quit()
+    ```
+
+  * ``MIMEMultipart``
+
+  * ``MIMEBase``
+
+  * ``attach add_header``
+
+  * ``cid:x``
+
+  * ``plain html alternative``
+
+  * ``starttls()``
+
+  * ``Message``
+
+    * ``MIMEBase``
+      * ``MIMEMultipart``
+      * ``MIMENonMultipart``
+        * ``MIMEMessage``
+        * ``MIMEText``
+        * ``MIMEImage``
+
+* POP(Post Office Protocol) POP3
+
+  * ``poplib``
+
+  * ```python
+    import poplib
+    server=poplib.POP3(pop3_server)
+    server.set_debuglevel(1)
+    print(server.getwelcome().decode('utf-8'))
+    server.user(email)
+    server.pass_(password)
+    server.stat()
+    resp,emails,octets=server.list()
+    resp,lines,octets=server.retr(len(emails)) #从1开始
+    msg_content=b'\r\n'.join(lines).decode('utf-8')
+    msg=Parser().parsestr(msg_content)
+    server.quit()
+    ```
