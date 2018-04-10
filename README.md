@@ -1292,3 +1292,124 @@ st = {(1, 2), 3, "A"}
 
   * ```handle_starttag`` ``handle_endtag`` ``handle_startendtag`` ``handle_data`` ``handle_comment`` ``handle_entityref`` ``handle_charref``
 
+
+### 第三方模块
+
+* 第三方模块都会在[PyPI](https://pypi.python.org/pypi)注册，可以通过pip安装，或使用自带数十个第三方模块的Anaconda
+
+* Pillow
+
+  * PIL(Python Imaging Library)是Python事实上的图形处理标准
+
+  * ```python
+    from PIL import Image,ImageFilter,ImageDraw,ImageFont
+    im=Image.open('test.jpg')
+    print(im.size)
+    im.thumbnail(im.size//2)
+    im.save('thumbnail.jpg','jpeg')
+    im2=im.filter(ImageFilter.BLUR)
+    image=Image.new('RGB',(width,height),(255,255,255))
+    font=ImageFont.truetype('Arial.ttf',36)
+    draw=ImageDraw.Draw(image)
+    for x in range(width):
+        for y in range(height):
+            draw.point((x,y),fill=rndColor())
+    for t in range(4):
+        draw.text((60*t+10,10),randChar(),font=font,fill=randColor2())
+    ```
+
+* requests
+
+  * 处理URL资源
+
+  * ```python
+    import requests
+    r=requests.get('https://www.baidu.com')
+    r.status_code
+    r.text
+    r.headers
+    r=requests.get('https://www.baidu.com/s',params={'wd':'python'})
+    r.url
+    r.encoding
+    r.content
+    r=requests.get('https://api.github.com/')
+    r.json()
+    #headers={'User-Agent':}
+    r.text
+    r=requests.post('')
+    ```
+
+  * 默认使用``application/x-www-form-urlencoded``对POST数据编码
+
+  * 可以通过``json``参数传入JSON数据``requests.post(url,json=params)``
+
+  * 通过``files``参数上传文件``requests.post(url,files={'file':open('report.xls','rb')})``。一定要使用``rb``模式读取
+
+  * ``put delete``
+
+  * ``r.headers r.cookies['ts']``
+
+  * ``requests.get(url,cookies={'token':'123'},timeout=2.5)``
+
+* chardet
+
+  * 编码检测
+
+  * ```python
+    chardet.detect(b'hello,world!')
+    chardet.detect('你好世界'.encode('gbk'))
+    chardet.detect('你好世界'.encode('utf-8'))
+    chardet.detect('こんにちは世界'.encode('euc-jp'))
+    ```
+
+* psutil (process and system utilities)
+
+  * Python可以通过``subprocess``获取系统信息
+
+  * 第三方系统监控模块
+
+  * ```python
+    # CPU信息
+    psutil.cpu_count()
+    psutil.cpu_count(logical=False)
+    psutil.cpu_times() #用户 系统 空闲CPU时间
+    psutil.cpu_percent(interval=1,percpu=True) #CPU使用率
+    # 内存信息
+    psutil.virtual_memory()
+    psutil.swap_memory()
+    # 磁盘信息
+    psutil.disk_partitions()
+    psutil.disk_usage('/')
+    psutil.disk_io_counters()
+    # 网络信息
+    psutil.net_io_counters()
+    psutil.net_if_addrs()
+    psutil.net_if_stats()
+    psutil.net_connections() # 需要root权限
+    #进程信息
+    psutil.pids()
+    p=psutil.Process(0) # root进程需要root权限
+    p.name()
+    p.exe()
+    p.cwd()
+    p.cmdline()
+    p.ppid()
+    p.parent()
+    p.children()
+    p.status()
+    p.username()
+    p.create_time()
+    p.terminal()
+    p.cpu_times()
+    p.memory_info()
+    p.open_files()
+    p.connections()
+    p.num_threads()
+    p.threads()
+    p.environ()
+    p.terminate() # 结束进程
+    # 模拟ps命令
+    psutil.test()
+    ```
+
+### 
