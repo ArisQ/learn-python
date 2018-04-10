@@ -1412,4 +1412,64 @@ st = {(1, 2), 3, "A"}
     psutil.test()
     ```
 
-### 
+
+### virtualenv
+
+* virtualenv用于为每个应用创建一套隔离的python运行环境
+
+* ```shell
+  mkdir myproject
+  cd myproject
+  virtual --no-site-packages venv
+  source venv/bin/activate
+  (venv) pip install jinjia2
+  (venv) python myapp.py
+  (venv) deactivate
+  ```
+
+* ``venv``目录
+
+### 图形界面
+
+* 图形界面第三方库
+
+  * Tk
+    * 自带库支持Tk的Tkineter
+  * wxWidgets
+  * Qt
+  * GTK
+
+* Tkinter
+
+  * Python调研Tkinter，Tkinter封装了Tk接口；Tk是图形库，使用Tcl语言开发；Tk会调用本地GUI
+
+  * 每个Button、Label、输入框、Frame都是一个Widget，Frame是容纳其他Widget的Widget
+
+  * 布局
+
+    * ``pack()``把Widget加入父容器
+    * ``grid()``
+
+  * ```python
+    from tkinter import *
+    class Application(Frame):
+        def __init__(self,master=None):
+            Frame.__init__(self,master)
+            self.pack()
+            self.createWidgets()
+        def createWidgets(self):
+            self.helloLabel=Label(self,text='Hello World!')
+            self.helloLabel.pack()
+            self.nameInput=Entry(self)
+            self.nameInput.pack()
+            self.greetButton=Button(self,text='Enter',command=self.greet)
+           	self.greetButton.pack()
+            self.quitButton=Button(self,text='Quit',command=self.quit)
+            self.quitButton.pack()
+        def greet(self):
+            name=self.nameInput.get() or 'world'
+            self.helloLabel.text='Hello'+name
+    app=Application()
+    app.master.title('Hello World')
+    app.mainloop()
+    ```
