@@ -1473,3 +1473,89 @@ st = {(1, 2), 3, "A"}
     app.master.title('Hello World')
     app.mainloop()
     ```
+
+### 网络编程
+
+* TCP/IP
+
+  * IP协议
+  * TCP协议
+    * 源IP地址
+    * 目标IP地址
+    * 源端口
+    * 目标端口
+
+* TCP编程
+
+  * Socket
+
+  * 主动发起的为客户端，被动响应的为服务器
+
+  * 客户端
+
+      * ```python
+        import socket
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.connect(('www.sina.com.cn',80))
+        s.send(b'Get / HTTP/1.1\r\nHost: www.sina.com.cn\r\nConnection: close\r\n\r\n')
+        buffer=[]
+        while True:
+            d=s.recv(1024) # 每次最多1k
+            if d:
+                buffer.append(d)
+            else:
+                break
+        data=b''.join(buffer)
+        s.close()
+        ```
+
+  * 服务器
+
+      * ```python
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.bind(('127.0.0.1',9999))
+        s.listen(5) #最大连接数量5
+        while True:
+            sock,addr=s.accept()
+            t=threading.Thread(target=tcplink,args=sock,addr)
+            t.start()
+        def tcplink(sock,addr):
+            sock.send(b'Welcome!')
+            while True:
+                data=sock.recv(1024)
+                if not data or data.decode('utf-8') == 'exit':
+                    break
+                sock.send(('Hello,%s!'%data.decode('utf-8')).encode('utf-8'))
+            sock.close()
+        ```
+
+      * 小于1024的端口必须要管理员权限
+
+* UDP编程
+
+  * UDP无连接
+
+  * 不可靠但速度快
+
+  * 客户端
+
+    * ```python
+      s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+      s.sendto(b'world',('127.0.0.1',9999))
+      s.recv(1024)
+      s.close
+      ```
+
+    * ​
+
+  * 服务器
+
+    * ```python
+      s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+      s.bind(('localhost',9999))
+      while True:
+      	data,addr=s.recvfrom(1024)
+          print(addr,data)
+          s.sendto(b'hello, %s!'%data,addr)
+      s.close()
+      ```
