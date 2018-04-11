@@ -1609,6 +1609,8 @@ st = {(1, 2), 3, "A"}
         * ``MIMEText``
         * ``MIMEImage``
 
+  * 添加附件时，读取文件使用``rb``模式，即使文件是文本（如python源码）。可以避免系统locale与文件locale不同导致的异常。
+
 * POP(Post Office Protocol) POP3
 
   * ``poplib``

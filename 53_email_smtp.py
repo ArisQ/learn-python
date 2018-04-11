@@ -75,7 +75,7 @@ with open('./46_pillow/lena.jpg', 'rb') as f:
     mime.set_payload(f.read())
     encoders.encode_base64(mime)
     msg3.attach(mime)
-with open('53_email_smtp.py', 'r') as f:
+with open('53_email_smtp.py', 'rb') as f:
     mime = MIMEBase('text', 'py', filename='smtp.py')
     mime.add_header('Content-Disposition', 'attachment', filename='smtp.py')
     mime.add_header('Content-ID', '<1>')
