@@ -1629,3 +1629,105 @@ st = {(1, 2), 3, "A"}
     msg=Parser().parsestr(msg_content)
     server.quit()
     ```
+
+### 访问数据库
+
+* 数据库模型
+
+  * 网状数据库
+  * 层次数据库
+  * 关系数据库
+  * NoSQL
+
+* 关系数据库类别
+
+  * Oracle
+  * SQL Server
+  * DB2
+  * Sybase
+  * MySQL
+  * PostgreSQL
+  * sqlite
+
+* SQLite
+
+  * 嵌入式数据库
+
+  * 表 外键
+
+  * 游标Cursor
+
+  * ```python
+    import sqlite3
+    conn=sqlite3.connect('test.db')
+    cursor=conn.cursor()
+    cursor.execute('create table user (id varchar(20) primary key,name varchar(20))')
+    cursor.execute('insert into user (id,name) values (\'1\',\'Michael\')')
+    cursor.rowcount
+    cursor.close()
+    conn.commit()
+    conn.close()
+    ```
+
+  * ```python
+    cursor.execute('select * from user where id=?',('1',))
+    values=cursor.fetchall()
+    ```
+
+  * DB-API ``?``占位符
+
+* MySQL
+
+  * 安装
+
+  * 驱动安装``pip install mysql-connector-python --allow-external``
+
+  * ```python
+    import mysql.connector
+    conn=mysql.connector.connect(user='root',password='password',database='test')
+    curso=conn.cursor()
+    cursor.execute('create table user (id varchar(20) primary key,name varchar(20))')
+    cursor.execute('insert into user (id,name) values (%s,%s)',['1','Michael'])
+    cursor.rowcount
+    conn.commit()
+    cursor.close()
+    cursor=conn.cursor()
+    cursor.execute('select * from user where id=%s',('1',))
+    values=cursor.fetchall()
+    cursor.close()
+    conn.close()
+    ```
+
+  * ``INSERT``后需要``commit()``
+
+  * MySQL占位符为``%s``
+
+* SQLAIchemy
+
+  * ORM(Object-Rational Mapping)技术
+
+  * SQLAIchemy是Python中最有名的ORM框架
+
+  * ```python
+    from sqlalchemy import Column,String,create_engine
+    from sqlalchemy.orm import sessionmaker
+    from sqlalchemy.ext.declarative import declarative_base
+    Base=declarative_base()
+    class User(Base):
+        __tablename__='user'
+        id=Column(String(20),primary_key=True)
+        name=Column(String(20))
+    engine=create_engine('mysql+mysqlconnector://root:password@localhost:3306/test')
+    DBSession=sessionmaker(bind=engine)
+    session=DBSession()
+    session.add(User(id='5',name='Bob'))
+    session.commit()
+    user=session.query(User).filter(User.id=='5').one()
+    session.close()
+
+    ```
+
+  * ``'数据库类型+数据库驱动名称://用户名:口令@机器地址:端口号/数据库名'``
+
+  * ``relationship``
+
