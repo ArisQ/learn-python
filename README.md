@@ -1833,3 +1833,59 @@ st = {(1, 2), 3, "A"}
     * ``Mako`` ``<%...%> ${xxx}``
     * ``Cheetah`` ``<%...%> ${xxx}`
     * ``Django`` ``{%...%} {{xxx}``
+
+### 异步IO
+
+* 需要消息循环
+
+* 协程/微线程/纤程 Coroutine
+
+  * 区别于子程序调用
+  * 协程比多线程效率高
+  * 不需要锁
+  * Python通过generator实现协程，for/next/yield
+  * *子程序是协程的特例*
+
+* ``asyncio``
+
+  * 可以单线程实现并发IO
+
+  * ``@asyncio.coroutine``将generator标记为``coroutine``，然后放到``EventLoop``中执行
+
+  * ```python
+    @asyncio.coroutine
+    def hello():
+        print('Hello 1')
+        yield from asyncio.sleep(1)
+        print('Hello 2')
+    loop=asyncio.get_event_loop()
+    loop.run_until_complete(hello())
+    loop.run_until_complete(asyncio.wait([hello() for i in range(5)]))
+    loop.close()
+    ```
+
+  * ``yield from``
+
+  * ``EventLoop``在close以后再run会出错
+
+  * ``loop.run_forever()``
+
+* ``async/await``
+
+  * ``async`` ``await``是针对``coroutine``的新语法，从3.5版本开始
+  * ``@asyncio.coroutine``替换为``async``
+  * ``yield``替换为``await``
+
+* ``aiohttp`` 基于``asyncio``实现的HTTP框架
+
+  * ```python
+    async def hello(request):
+        request.match_info['name']
+        return web.Response(body=b'<h1>Hello</h1>',content_type='text/html')
+    app=aiohttp.web.Application(loop=loop)
+    app.router.add_route('Get','/hello/{name}',hello)
+    h=app.make_handler()
+    srv=loop.create_server(h,'localhost',8000)
+    loop.run_until_complete(srv)
+    loop.run_forever()
+    ```
