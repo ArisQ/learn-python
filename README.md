@@ -1724,10 +1724,112 @@ st = {(1, 2), 3, "A"}
     session.commit()
     user=session.query(User).filter(User.id=='5').one()
     session.close()
-
     ```
 
   * ``'数据库类型+数据库驱动名称://用户名:口令@机器地址:端口号/数据库名'``
 
   * ``relationship``
 
+### Web开发
+
+* Web开发阶段
+
+  * 静态Web页面
+  * CGI(Common Gateway Interface)
+  * ASP/JSP/PHP
+  * MVC(Model-View-Controller)
+  * MVVM
+
+* HTTP协议
+
+  * HTML
+  * HTTP
+  * ``Get /path HTTP/1.1``
+  * ``POST /path HTTP/1.1``
+  * ``Header: Value1``
+  * ``Content-Type``决定Body内容
+  * ``Content-Encoding``决定是否压缩，常见的为gzip
+
+* HTML
+
+  * HTML
+  * CSS
+  * Javascript
+
+* WSGI(Web Server Gateway Interface)接口
+
+  * ```python
+    def application(environ,start_response):
+        start_response('200 OK',[('Content-Type','text/html')])
+        return [b'<h1>Hello, Web!</h1>']
+    ```
+
+    * ``environ``为包含所有HTTP请求信息的``dict``对象
+    * ``start_response``为发送HTTP响应的函数，只能调用一次，参数包含HTTP响应码和由HTTP Header组成的``list``，每个Header为包含两个``str``的``tuple``
+
+  * WSGI服务器
+
+    * 内置``wsgiref``
+
+      * ```python
+        from wsgiref.simple_server import make_server
+        httpd=make_server('',8000,application)
+        httpd.server_forever()
+        ```
+
+  * ```python
+    def application(environ,start_response):
+        start_response('200 OK',[('Content-Type','text/html')])
+        body='<h1>Hello, %s!</h1>'%(environ['PATH_INFO'][1:] or 'web')
+        return [body.encode('utf-8')]
+    ```
+
+* Web框架
+
+  * Flask
+
+    * Flask通过装饰器将URL和函数关联
+
+    * 默认运行在5000端口
+
+    * ```python
+      from flask import Flask,request
+      app=Flask(__name__)
+      @app.route('/',methods=['GET','POST'])
+      def home():
+          return '<h1>Home</h1>'
+      @app.route('/signin',methods=['GET'])
+      def signin_form():
+          return '''<form action="/signin" method="post">
+          <p><input name="username"></p>
+          <p><input name="password" type="password"></p>
+          <p><button type="submit">Sign In</button></p>
+          '''
+      @app.route('/signin',methods=['POST'])
+      def signin():
+          if request.form['username']=='admin' and request.form['password']=='password':
+              return '<h3>Hello, Administrator!</h3>'
+          return '<h3>Authentification failed.</h3>'
+      if __name__=='__main__':
+          app.run()
+      ```
+
+  * Django 全能
+
+  * web.py 小巧
+
+  * Bottle 类似Flask
+
+  * Tornado Facebook的开源异步框架
+
+* 模板
+
+  * MVC
+  * ``name``
+  * 常用模板
+    * ``jinja2``，Flask默认支持
+      * ``{{name}}``表示变量
+      * ``{%...%}``表示指令
+    * ``Mako`` ``<%...%> ${xxx}``
+    * ``Cheetah`` ``<%...%> ${xxx}`
+    * ``Django`` ``{%...%} {{xxx}``
